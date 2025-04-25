@@ -53,8 +53,8 @@ jobs:
           npm install -g crx
           mkdir -p dist
           crx pack ./.output/chrome-mv3 \
-            --key=./key.pem \
-            --output=dist/extension-v${{ github.event.inputs.version }}.crx
+            -p ./key.pem \
+            -f dist/extension-v${{ github.event.inputs.version }}.crx
 
       # 8. GitHub Pages へデプロイ
       - name: Deploy to GitHub Pages
