@@ -30,6 +30,11 @@ jobs:
       - name: Bump package.json version
         run: npm version ${{ github.event.inputs.version }} --no-git-tag-version
 
+      - name: Debug list workspace
+        run: |
+          echo "WORKING DIR: $(pwd)"
+          ls -R .
+
       # 5. manifest.json に同期
       - name: Sync manifest version
         run: node scripts/sync-manifest-version.js
