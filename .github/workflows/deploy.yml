@@ -50,11 +50,11 @@ jobs:
       # 7. crx パッケージ化
       - name: Pack CRX
         run: |
-          npm install -g crx
+          npm install -g crx3
           mkdir -p dist
-          crx pack ./.output/chrome-mv3 \
+          crx3 ./.output/chrome-mv3 \
             -p ./key.pem \
-            -f dist/extension-v${{ github.event.inputs.version }}.crx
+            -o dist/extension-v${{ github.event.inputs.version }}.crx
 
       # 8. GitHub Pages へデプロイ
       - name: Deploy to GitHub Pages
