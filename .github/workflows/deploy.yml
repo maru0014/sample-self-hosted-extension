@@ -1,0 +1,61 @@
+name: Build & Deploy Chrome Extension
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g. 1.0.1)'
+        required: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. ソース取得
+      - uses: actions/checkout@v3
+
+      # 2. Node.js 22 をセットアップ
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+
+      # 3. 依存インストール＆ビルド
+      - run: npm ci
+      - run: npm run build
+
+      # 4. バージョン更新
+      - name: Bump package.json version
+        run: npm version ${{ github.event.inputs.version }} --no-git-tag-version
+
+      # 5. manifest.json に同期
+      - name: Sync manifest version
+        run: node scripts/sync-manifest-version.js
+
+      # 6. 変更をコミット（version bump）
+      - name: Commit version bump
+        uses: EndBug/add-and-commit@v9
+        with:
+          author_name: github-actions[bot]
+          author_email: github-actions[bot]@users.noreply.github.com
+          message: 'chore(release): v${{ github.event.inputs.version }}'
+
+      # 7. crx パッケージ化
+      - name: Pack CRX
+        run: |
+          npm install -g crx
+          mkdir -p dist
+          crx pack ./.output/chrome-mv3 \
+            --key=./key.pem \
+            --output=dist/extension-v${{ github.event.inputs.version }}.crx
+
+      # 8. GitHub Pages へデプロイ
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          user_name: github-actions[bot]
+          user_email: github-actions[bot]@users.noreply.github.com
