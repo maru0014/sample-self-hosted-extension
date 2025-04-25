@@ -31,7 +31,11 @@ jobs:
 
       - name: Get version from package.json
         id: get_version
-        run: echo "VERSION=$(node -p \"require('./package.json').version\")" >> $GITHUB_ENV
+        run: |
+          # fetch the version field
+          VERSION=$(node -p "require('./package.json').version")
+          # export it for later steps
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
 
       # 4. バージョン更新
       - name: Bump package.json version
