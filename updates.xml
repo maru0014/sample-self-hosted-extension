@@ -2,7 +2,7 @@
 <gupdate xmlns="http://www.google.com/update2/response" protocol="2.0">
   <app appid="caceekaigogkcjjlkkfdpaogbndkakbc">
     <updatecheck
-      codebase="https://maru0014.github.io/maru0014/sample-self-hosted-extension/extension-v1.0.0.crx"
+      codebase="https://maru0014.github.io/sample-self-hosted-extension/extension-v1.0.0.crx"
       version="1.0.0"/>
   </app>
 </gupdate>
