@@ -16,6 +16,9 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
+    env:
+      EXTENSION_ID: ${{ vars.EXTENSION_ID }}
+
     steps:
       # 1. ソース取得
       - uses: actions/checkout@v3
