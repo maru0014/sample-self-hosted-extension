@@ -70,6 +70,19 @@ jobs:
             -p ./key.pem \
             -o dist/extension-v${{ env.VERSION }}.crx
 
+      - name: Generate updates.xml
+        run: |
+          cat > dist/updates.xml <<EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <gupdate xmlns="http://www.google.com/update2/response" protocol="2.0">
+            <app appid="${{ env.EXTENSION_ID }}">
+              <updatecheck
+                codebase="https://${{ github.repository_owner }}.github.io/${{ github.repository }}/ xtension-v${{ env.VERSION }}.crx"
+                version="${{ env.VERSION }}"/>
+            </app>
+          </gupdate>
+          EOF
+
       # 8. GitHub Pages へデプロイ
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
