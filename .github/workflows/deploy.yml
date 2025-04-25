@@ -37,7 +37,7 @@ jobs:
 
       # 5. manifest.json に同期
       - name: Sync manifest version
-        run: node scripts/sync-manifest-version.js
+        run: node scripts/sync-manifest-version.cjs
 
       # 6. 変更をコミット（version bump）
       - name: Commit version bump
